@@ -12,21 +12,11 @@ const articleSchema = new mongoose.Schema(
         },
         sourceUrl: {
             type: String,
-        },
-        isUpdated: {
-            type: Boolean,
-            default: false,
-        },
-        references: {
-            type: [String],
-            default: [],
+            required: true,
+            unique: true,
         },
     },
-    {
-        timestamps: true,
-    }
+    { timestamps: true }
 );
 
-const Article = mongoose.model("Article", articleSchema);
-
-export default Article;
+export default mongoose.model("Article", articleSchema);

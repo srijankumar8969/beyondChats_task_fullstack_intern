@@ -22,12 +22,27 @@ export const getArticleById = async (req, res) => {
 };
 
 export const createArticle = async (req, res) => {
-    try {
-        const article = new Article(req.body);
-        const savedArticle = await article.save();
-        res.status(201).json(savedArticle);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
+    try{
+    const { title, content, sourceUrl } = req.body;
+
+    const existing = await Article.findOne({ sourceUrl });
+
+    if (existing) {
+        return res.status(200).json({
+            message: "Article already exists, skipping",
+        });
+    }
+
+    const article = await Article.create({
+        title,
+        content,
+        sourceUrl,
+    });
+
+    res.status(201).json(article);
+    }
+    catch(error){
+        res.status(500).json({ message: error.message });
     }
 };
 
